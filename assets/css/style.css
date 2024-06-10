@@ -27,7 +27,7 @@ body {
   opacity: 0;
 } */
 
-.myModal {
+/* .myModal {
   display: inline-block;
   justify-content: center;
   align-items: center;
@@ -37,11 +37,11 @@ body {
   max-width: 100%;
   padding: 30px 40px;
   text-align: center;
-  opacity: 0;
+  opacity: 1;
   border-radius: 5px;
 }
 
 .myModal.show {
   pointer-events: auto;
   opacity: 1;
-}
+} */

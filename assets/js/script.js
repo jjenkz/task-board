@@ -15,6 +15,7 @@ console.log(uniqueTaskId);
 // Todo: create a function to create a task card
 // needs title, deadline and description
 function createTaskCard(event) {
+  event.preventDefault();
   const taskCard = document.createElement("div");
   taskCard.add("task-card");
 }

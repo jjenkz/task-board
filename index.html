@@ -32,24 +32,52 @@
       <h1 class="display-3">Task Board</h1>
       <p class="lead">A simple Kanban board for task management</p>
     </header>
-    <div class="text-center mb-5">
-      <button
-        id="btn-success"
-        class="btn btn-success"
-        data-bs-toggle="modal"
-        data-bs-target="#formModal"
+    <div class="modal-container">
+      <div class="text-center mb-5">
+        <button
+          class="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#formModal"
+        >
+          Add Task
+        </button>
+      </div>
+      <div
+        class="modal fade"
+        id="formModal"
+        tabindex="-1"
+        aria-labelledby="formModalLabel"
+        aria-hidden="true"
       >
-        Add Task
-      </button>
-      <div class="modal-container" id="modal-container">
-        <div class="myModal">
-          <label for="title">Task Title</label>
-          <input type="text" id="title" name="title" />
-          <label for="due-date"> Task Deadline</label>
-          <input type="date" id="due-date" name="dude-date" />
-          <label for="description">Task Description</label>
-          <input type="text" id="description" name="description" />
-          <button id="submit-task">Submit</button>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="formModalLabel">Add Task</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="myModal">
+              <form id="task-form">
+                <div class="mb-2">
+                  <label for="title">Task Title</label>
+                  <input type="text" id="title" name="title" />
+                </div>
+                <div class="mb-2">
+                  <label for="due-date"> Task Deadline</label>
+                  <input type="date" id="due-date" name="dude-date" />
+                </div>
+                <div class="mb-2">
+                  <label for="description">Task Description</label>
+                  <input type="text" id="description" name="description" />
+                </div>
+                <button type="submit" id="submit-task">Submit</button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
       <!-- Todo: Create a modal with a form to add tasks -->
