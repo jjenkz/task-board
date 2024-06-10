@@ -1,5 +1,5 @@
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 16px;
 }
 
@@ -13,4 +13,35 @@ body {
 
 .task-card:hover {
   cursor: grab;
+}
+
+/* .modal-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0;
+} */
+
+.myModal {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #fff;
+  width: 500px;
+  max-width: 100%;
+  padding: 30px 40px;
+  text-align: center;
+  opacity: 0;
+  border-radius: 5px;
+}
+
+.myModal.show {
+  pointer-events: auto;
+  opacity: 1;
 }
