@@ -15,3 +15,11 @@ Given a task board to manage a project:
 5. When I drag a task to a different progress column, then the task's progress state is updated accordingly and will stay in the new column after refereshing.
 6. When I click the delete button for a task, then the task is removed from the task board and will not be added back after refreshing.
 7. When I refresh the page, then the saved tasks persist.
+
+### Special Shoutouts
+
+Thank you to the following prople and programs who aided me in this homework:
+
+1. Billy Hogan for throwing coding ideas off one another
+2. Ben Machock for being the professor
+3. Xpert Learning assistant for providing some functions

@@ -2,7 +2,7 @@
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
-// Todo: create a function to generate a unique task id
+// // Todo: create a function to generate a unique task id
 function generateTaskId() {
   const timeStamp = Date.now().toString(36);
   const random = Math.random().toString(36).substring(2, 5);
@@ -13,51 +13,45 @@ const uniqueTaskId = generateTaskId();
 console.log(uniqueTaskId);
 
 // Todo: create a function to create a task card
-
-function createTaskCard(event) {
-  event.preventDefault();
+function createTaskCard(task) {
   const taskCardEl = document.createElement("div");
   taskCardEl.classList.add("task-card", "card", "mb-2");
-  taskCardEl.setAttribute("id", "taskCard");
+  taskCardEl.setAttribute("id", `taskCard_${task.id}`);
   taskCardEl.setAttribute("draggable", "true");
 
-  const todayDate = newDate();
-  const deadline = newDate(task.newDate);
+  const todayDate = new Date();
+  const deadline = new Date(task.deadline);
   if (deadline < todayDate) {
     taskCardEl.classList.add("overdue");
   } else {
     taskCardEl.classList.add("due-soon");
   }
 
-  // create body element
   const cardBodyEl = document.createElement("div");
   cardBodyEl.classList.add("card-body");
 
-  //create card elemtents for the body
   const cardTitleEl = document.createElement("h4");
   cardTitleEl.classList.add("card-text");
   cardTitleEl.textContent = task.title;
 
   const cardTextEl = document.createElement("p");
   cardTextEl.classList.add("card-text");
-  cardTextEl.textContent = text.description;
+  cardTextEl.textContent = task.description;
 
   const cardDeadlineEl = document.createElement("p");
   cardDeadlineEl.classList.add("card-text");
-  cardDeadlineEl.textContent = `Due date; ${task.deadline}`;
+  cardDeadlineEl.textContent = `Due date: ${task.deadline}`;
 
   const deleteBut = document.createElement("button");
   deleteBut.classList.add("btn", "btn-delete");
   deleteBut.textContent = "Delete";
-  deleteBut.onclick = () => handleDeleteTask(task.id);
+  deleteBut.addEventListener("click", () => handleDeleteTask(task.id));
 
-  //append card elements to body element
   cardBodyEl.appendChild(cardTitleEl);
   cardBodyEl.appendChild(cardTextEl);
   cardBodyEl.appendChild(cardDeadlineEl);
   cardBodyEl.appendChild(deleteBut);
 
-  //append body element to task card
   taskCardEl.appendChild(cardBodyEl);
 
   return taskCardEl;
@@ -72,14 +66,16 @@ function renderTaskList() {
   while (todoCol.firstChild) {
     todoCol.removeChild(todoCol.firstChild);
   }
-
   while (inProgressCol.firstChild) {
     inProgressCol.removeChild(inProgressCol.firstChild);
   }
-
   while (doneCol.firstChild) {
     doneCol.removeChild(doneCol.firstChild);
   }
+
+  // todoCol.innerHTML = "";
+  // inProgressCol.innerHTML = "";
+  // doneCol.innerHTML = "";
 
   taskList.forEach((task) => {
     const taskCard = createTaskCard(task);
@@ -91,6 +87,7 @@ function renderTaskList() {
       doneCol.appendChild(taskCard);
     }
   });
+
   makeCardsDraggable();
 }
 
@@ -102,7 +99,7 @@ function handleAddTask(event) {
   const deadline = document.getElementById("due-date").value;
 
   const newTask = {
-    id: generateTaskId(),
+    id: nextId++,
     title,
     description,
     deadline,
@@ -111,35 +108,52 @@ function handleAddTask(event) {
 
   taskList.push(newTask);
   localStorage.setItem("tasks", JSON.stringify(taskList));
-  localStorage.setItem("newId", newId);
+  localStorage.setItem("nextId", nextId);
 
   renderTaskList();
-  document.getElementById("task-form").requestFullscreen();
-  $("#task-form").modal("hide");
+  document.getElementById("task-form").reset();
+  $("#formModal").modal("hide");
 }
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event) {
-  event.preventDefault();
+function handleDeleteTask(taskId) {
   taskList = taskList.filter((task) => task.id !== taskId);
   localStorage.setItem("tasks", JSON.stringify(taskList));
   renderTaskList();
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
-function handleDrop(event, ui) {}
+function handleDrop(event) {
+  event.preventDefault();
+  const taskId = event.target.id.split("_")[1];
+  const newStatus = event.target.closest(".col").id;
+
+  const task = taskList.find((task) => task.id == taskId);
+  task.status = newStatus;
+
+  localStorage.setItem("tasks", JSON.stringify(taskList));
+  renderTaskList();
+}
+
+function makeCardsDraggable() {
+  $(".task-card").draggable({
+    revert: "invalid",
+    zIndex: 100,
+  });
+}
+
+function makeLanesDroppable() {
+  $(".lane .card-body").droppable({
+    accept: ".task-card",
+    drop: handleDrop,
+    hoverClass: "bg-secondary",
+  });
+}
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
-$(document).ready(function () {});
-
-const taskBut = document.getElementById("btn-success");
-const modal = document.getElementsByClassName("myModal");
-const submitBut = document.getElementById("submit-task");
-
-taskBut.addEventListener("click", () => {
-  modal.classList.add("show");
-});
-
-submitBut.addEventListener("click", () => {
-  modal.classList.remove("show");
+$(document).ready(function () {
+  renderTaskList();
+  makeLanesDroppable();
+  $("#due-date").datepicker();
+  $("#task-form").on("submit", handleAddTask);
 });
