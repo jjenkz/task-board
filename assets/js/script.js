@@ -14,10 +14,12 @@ console.log(uniqueTaskId);
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
+  console.log(task);
   const taskCardEl = document.createElement("div");
   taskCardEl.classList.add("task-card", "card", "mb-2");
   taskCardEl.setAttribute("id", `taskCard_${task.id}`);
   taskCardEl.setAttribute("draggable", "true");
+  taskCardEl.setAttribute("data-id", task.id);
 
   const todayDate = new Date();
   const deadline = new Date(task.deadline);
@@ -59,6 +61,9 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+  if (!taskList) {
+    taskList = [];
+  }
   const todoCol = document.getElementById("todo-cards");
   const inProgressCol = document.getElementById("in-progress-cards");
   const doneCol = document.getElementById("done-cards");
@@ -125,11 +130,14 @@ function handleDeleteTask(taskId) {
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event) {
   event.preventDefault();
-  const taskId = event.target.id.split("_")[1];
-  const newStatus = event.target.closest(".col").id;
+  console.log(event.target);
+  // const taskId = event.target.dataset;
+  // console.log(taskId);
+  // // const newStatus = event.target.closest(".col").id;
+  // console.log(newStatus);
 
-  const task = taskList.find((task) => task.id == taskId);
-  task.status = newStatus;
+  // const task = taskList.find((task) => task.id == taskId);
+  // task.status = newStatus;
 
   localStorage.setItem("tasks", JSON.stringify(taskList));
   renderTaskList();
